@@ -47,9 +47,23 @@ with st.container(border=True):
     )
     create_product_price = st.number_input(
         label="価格（円）",
-        min_value=0,
-        step=100,
+        min_value=0.0,
+        step=100.0,
         placeholder="価格を入力してください",
         key="create_product_price",
+        format="%.2f",
     )
     create_button = st.button("登録", key="create_button")
+
+    if create_button:
+        name = create_product_name
+        price = create_product_price
+        if not name:
+            st.warning("商品名を入力してください。")
+        else:
+            result = asyncio.run(create_product(name, price))
+            if result:
+                st.success("商品を登録しました。")
+                st.json(result.model_dump_json(indent=2))
+            else:
+                st.error("商品の登録に失敗しました。APIサーバーが起動しているか確認してください。")
