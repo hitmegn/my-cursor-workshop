@@ -1,4 +1,4 @@
-from fastapi import FastAPI, status
+from fastapi import FastAPI, HTTPException, status
 from models import ProductModel
 from pydantic import BaseModel, Field
 from storage import InMemoryStorage
@@ -41,3 +41,16 @@ class CreateProductRequest(BaseModel):
 async def create_product(product_data: CreateProductRequest) -> ProductModel:
     """商品を作成する"""
     return storage.create_product(name=product_data.name, price=product_data.price)
+
+
+@app.get(
+    "/items/{product_id}",
+    response_model=ProductModel,
+    description="指定されたIDの商品情報を取得します。",
+)
+async def get_product(product_id: int) -> ProductModel:
+    """商品を取得する"""
+    product = storage.get_product(product_id)
+    if product is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+    return product
