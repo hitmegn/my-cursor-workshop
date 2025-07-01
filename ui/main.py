@@ -8,3 +8,33 @@ st.set_page_config(
 )
 
 st.title("商品管理UI")
+
+# --- 商品検索フォーム ---
+st.header("1. 商品をIDで検索")
+with st.container(border=True):
+    search_product_id = st.number_input(
+        label="商品ID",
+        min_value=1,
+        step=1,
+        placeholder="検索したい商品IDを入力してください",
+        key="search_product_id",
+    )
+    search_button = st.button("検索", key="search_button")
+
+
+# --- 商品登録フォーム ---
+st.header("2. 新しい商品を登録")
+with st.container(border=True):
+    create_product_name = st.text_input(
+        label="商品名",
+        placeholder="商品名を入力してください",
+        key="create_product_name",
+    )
+    create_product_price = st.number_input(
+        label="価格（円）",
+        min_value=0,
+        step=100,
+        placeholder="価格を入力してください",
+        key="create_product_price",
+    )
+    create_button = st.button("登録", key="create_button")
