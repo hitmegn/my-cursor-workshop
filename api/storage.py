@@ -1,6 +1,6 @@
 from typing import Dict
 
-from .models import ProductModel
+from models import ProductModel
 
 
 class InMemoryStorage:
