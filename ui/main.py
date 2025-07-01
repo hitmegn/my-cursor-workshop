@@ -1,4 +1,7 @@
+import asyncio
+
 import streamlit as st
+from api_client import create_product, get_product
 
 st.set_page_config(
     page_title="商品管理UI",
@@ -20,6 +23,18 @@ with st.container(border=True):
         key="search_product_id",
     )
     search_button = st.button("検索", key="search_button")
+
+    if search_button:
+        product_id = search_product_id
+        if product_id:
+            result = asyncio.run(get_product(product_id))
+            if result:
+                st.success("商品が見つかりました。")
+                st.json(result.model_dump_json(indent=2))
+            else:
+                st.error(f"商品ID: {product_id} の商品は見つかりませんでした。")
+        else:
+            st.warning("商品IDを入力してください。")
 
 
 # --- 商品登録フォーム ---
